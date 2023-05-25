@@ -23,8 +23,16 @@
         existing_queues: "{{ queues_response.json | map(attribute='name') | list }}"
 
     - name: Enviar notificação para o Teams
-      slack:
-        msg: "A fila {{ item }} não existe."
-        webhook_url: "{{ teams_webhook_url }}"
-      loop: "{{ queues_to_check }}"
-      when: item not in existing_queues
+      uri:
+        url: "{{ teams_webhook_url }}"
+        method: POST
+        body_format: json
+        body: |
+          {
+            "text": "{% for queue in queues_to_check if queue not in existing_queues %}A fila {{ queue }} não existe.{% endfor %}"
+          }
+      register: webhook_response
+      when: queues_to_check | difference(existing_queues) | length > 0
+
+    - debug:
+        var: webhook_response
