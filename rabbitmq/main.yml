@@ -3,7 +3,6 @@
   hosts: localhost
   gather_facts: no
   vars:
-    credentials: "Basic base64_username_password"  # Substitua com as credenciais corretas em Base64
     queues_to_check:
       - queue1
       - queue2
