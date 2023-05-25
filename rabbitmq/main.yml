@@ -1,6 +1,30 @@
-- hosts: localhost
-  vars_files:
-    - vars/vars.yml
+---
+- name: Verificar existência das filas
+  hosts: localhost
+  gather_facts: no
+  vars:
+    credentials: "Basic base64_username_password"  # Substitua com as credenciais corretas em Base64
+    queues_to_check:
+      - queue1
+      - queue2
+      - queue3
+    teams_webhook_url: "{{ teams_webhook_url }}"
   tasks:
-    - include_tasks: tasks/verify_queues.yml
-#    - include_tasks: tasks/create_queues.yml
+    - name: Verificar existência das filas
+      uri:
+        url: "{{ rabbitmq_url }}/rabbitmq/api/queues/"
+        method: GET
+        headers:
+          Authorization: "{{ credentials }}"
+        return_content: yes
+      register: queues_response
+
+    - set_fact:
+        existing_queues: "{{ queues_response.json | map(attribute='name') | list }}"
+
+    - name: Enviar notificação para o Teams
+      slack:
+        msg: "A fila {{ item }} não existe."
+        webhook_url: "{{ teams_webhook_url }}"
+      loop: "{{ queues_to_check }}"
+      when: item not in existing_queues
