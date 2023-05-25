@@ -1,5 +1,4 @@
 - name: Verificar existência das filas
-  gather_facts: no
   vars:
     rabbitmq_uri: "{{ rabbitmq_url }}/rabbitmq/api/queues/"
     queues_to_check:
