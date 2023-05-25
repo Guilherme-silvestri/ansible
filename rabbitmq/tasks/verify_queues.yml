@@ -1,5 +1,4 @@
 - name: Verificar existência das filas
-  hosts: localhost
   gather_facts: no
   vars:
     rabbitmq_uri: "{{ rabbitmq_url }}/rabbitmq/api/queues/"
