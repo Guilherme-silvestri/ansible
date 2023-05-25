@@ -1,0 +1,14 @@
+- name: Criar filas ausentes
+  rabbitmq_queue:
+    login_user: "{{ rabbitmq_user }}"
+    login_password: "{{ rabbitmq_password }}"
+    vhost: /
+    state: present
+    name: "{{ item.item }}"
+    durable: yes
+    auto_delete: no
+    arguments:
+      x-queue-type: classic
+  loop_control:
+    loop_var: item
+  when: item.item not in queue_info.results | map(attribute='queue') | list

@@ -1,0 +1,19 @@
+rabbitmq_user: {}
+rabbitmq_password: {}
+rabbitmq_queues:
+  - comp_cashin
+  - comp_statement
+  - create_device_token
+  - create_device_token_delay
+  - create_device_token_dlx
+  - credit_analisys
+  - credit_analisys_delay
+  - credit_analisys_dlx
+  - notification_http
+  - notify_email
+  - notify_push
+  - notify_sms
+  - pix_chargeback
+  - pix_credit
+  - pix_credit_description
+  - ted_reversal

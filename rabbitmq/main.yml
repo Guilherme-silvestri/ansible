@@ -1,0 +1,7 @@
+- hosts: localhost
+  become: yes
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - include_tasks: tasks/verify_queues.yml
+    - include_tasks: tasks/create_queues.yml

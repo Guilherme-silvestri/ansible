@@ -1,0 +1,9 @@
+- name: Verificar filas existentes
+  rabbitmq_queue_info:
+    queue: "{{ item }}"
+    login_user: "{{ rabbitmq_user }}"
+    login_password: "{{ rabbitmq_password }}"
+    vhost: /
+  register: queue_info
+  loop: "{{ rabbitmq_queues }}"
+  ignore_errors: yes
