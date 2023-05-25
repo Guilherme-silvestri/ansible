@@ -1,9 +1,28 @@
-- name: Verificar filas existentes
-  rabbitmq_queue_info:
-    queue: "{{ item }}"
-    login_user: "{{ rabbitmq_user }}"
-    login_password: "{{ rabbitmq_password }}"
-    vhost: /
-  register: queue_info
-  loop: "{{ rabbitmq_queues }}"
-  ignore_errors: yes
+- name: Verificar existência das filas
+  hosts: localhost
+  gather_facts: no
+  vars:
+    rabbitmq_uri: "{{ rabbitmq_url }}/rabbitmq/api/queues/"
+    rabbitmq_username: {{ rabbitmq_user }}
+    rabbitmq_password: {{ rabbitmq_passwd }}
+    queues_to_check:
+      - queue1
+      - queue2
+      - queue3
+  tasks:
+    - name: Verificar existência das filas
+      uri:
+        url: "{{ rabbitmq_uri }}"
+        method: GET
+        headers:
+          Authorization: "{{ credentials }}"
+        return_content: yes
+      register: queues_response
+
+    - set_fact:
+        existing_queues: "{{ queues_response.json | map(attribute='name') | list }}"
+
+    - debug:
+        msg: "A fila {{ item }} não existe."
+      loop: "{{ queues_to_check }}"
+      when: item not in existing_queues
