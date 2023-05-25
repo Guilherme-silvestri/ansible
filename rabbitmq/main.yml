@@ -3,6 +3,7 @@
   hosts: localhost
   gather_facts: no
   vars:
+    credentials: "Basic {{ 'admin:aHT7dbw57M3MRFCC' | b64encode }}"
     queues_to_check:
       - queue1
       - queue2
