@@ -3,8 +3,6 @@
   gather_facts: no
   vars:
     rabbitmq_uri: "{{ rabbitmq_url }}/rabbitmq/api/queues/"
-    rabbitmq_username: {{ rabbitmq_user }}
-    rabbitmq_password: {{ rabbitmq_passwd }}
     queues_to_check:
       - queue1
       - queue2
