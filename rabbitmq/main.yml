@@ -4,4 +4,4 @@
     - vars/vars.yml
   tasks:
     - include_tasks: tasks/verify_queues.yml
-    - include_tasks: tasks/create_queues.yml
+#    - include_tasks: tasks/create_queues.yml
